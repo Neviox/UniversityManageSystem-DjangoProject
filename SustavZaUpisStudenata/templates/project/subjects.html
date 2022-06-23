@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<center><h2>Subjects</h2></center>
+{%if user.Roles_id == 3 %}
+<a type="button" class="btn btn-success" href="/subject_create" style="margin-bottom: 10px; color: white;">Create</a>
+{%endif%}
+<table class="table" style="width: 100%;">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Name</th>
+			<th scope="col">Code</th>
+			<th scope="col">Nositelj Kolegija</th>
+			<th scope="col">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		
+		{% for subject in subjects %}
+			{%if request.user.Roles_id == 3 or subject.NositeljKolegija_id == request.user.id%}
+					<tr>
+						<th scope="row">{{ subject.id }}</th>
+						<td>{{ subject.Ime }}</td>
+						<td>{{ subject.Kod }}</td>
+						<td>{{ subject.NositeljKolegija}}</td>
+						<td>
+							<a href="/student_list/{{subject.id}}" type="button" class="btn btn-primary" style="color:white;">List</a>
+							<a href="/subject_edit/{{subject.id}}" type="button" class="btn btn-primary" style="color:white;">Edit</a>
+							<a href="/subject_view/{{subject.id}}" type="button" class="btn btn-primary" style="color:white;">View</a>
+							<a onclick="return confirm('Delete entry?')" href="/subject_delete/{{subject.id}}" type="button" class="btn btn-danger" style="color:white;">Delete</a>
+						</td>
+					</tr>
+			{% endif %}
+		{% endfor %}
+					
+	</tbody>
+</table>
+{% endblock %}

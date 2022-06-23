@@ -1,0 +1,23 @@
+<nav class="navbar navbar-dark bg-primary mb-4">
+	<div class="container">
+		{% if not user.is_authenticated %}
+			<a class="navbar-brand" href="/login">Login</a>
+			<a class="navbar-brand" href="/register">Register</a>
+		{% endif %}		
+		{% if user.is_authenticated %}
+			{% if user.Roles_id != 1 %}
+				<a class="navbar-brand" href="/students">Students</a>
+				<a class="navbar-brand" href="/subjects">Subjects</a>
+			{% endif %}
+			{% if user.Roles_id == 1 %}
+				<a class="navbar-brand" href="/student_view/{{user.id}}">Upis</a>
+			{% endif %}
+			{% if user.Roles_id == 3 %}
+				<a class="navbar-brand" href="/profesors/">Profesors</a>
+			{% endif %}						
+		<a class="navbar-brand" href="/logout/">Logout</a>
+		{% endif %}
+		
+	</div>
+
+</nav>

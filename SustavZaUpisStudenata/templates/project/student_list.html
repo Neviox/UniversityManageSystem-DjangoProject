@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% for s in subject%}
+<center><h2>Students list {{s.Ime}}</h2></center>
+
+{%if user.Roles_id == 2 %}
+<a type="button" class="btn btn-success" href="/filterlist/izgubilipotpis/{{s.id}}/" style="margin-bottom: 10px; color: white;">Lost signature list</a>
+<a type="button" class="btn btn-success" href="/filterlist/upisani/{{s.id}}/" style="margin-bottom: 10px; color: white;">Enrolled list</a>
+<a type="button" class="btn btn-success" href="/filterlist/polozeni/{{s.id}}/" style="margin-bottom: 10px; color: white;">Passed list</a>
+{%endif%}
+{% endfor %}
+<table class="table" style="width: 100%;">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Email</th>
+			<th scope="col">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{%for student in status %}	
+			<tr>
+				<th scope="row">{{ student.id }}</th>
+				<td>{{ student.Email }}</td>
+				<td>
+					<a href="/student_view/{{student.id}}" type="button" class="btn btn-primary" style="color: white;">Change Status</a>
+				</td>
+			</tr>
+		{%endfor%}			
+	</tbody>
+</table>
+{%endblock%}

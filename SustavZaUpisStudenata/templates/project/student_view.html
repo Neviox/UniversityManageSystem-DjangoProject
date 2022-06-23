@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form method="post" id="student_form">
+	{% csrf_token %}
+	<input type="hidden" name="subject_id" id="subject_id"/>
+	<input type="hidden" name="student_id" value="{{ student_id }}"/>
+	<div class="row">
+		<div class="col-sm-6">
+			<h4>Subjects</h4>
+			<br>
+			<ul class="list-group">
+				{% for not_enrolled_subject in not_enrolled_subjects %}	
+					<li class="list-group-item">
+						{{ not_enrolled_subject.Ime }}
+						{% if user.Roles_id != 2 %}
+						<button onclick="submitFormUrl('/enroll_subject/','{{ not_enrolled_subject.id }}')" type="button" class="btn btn-primary" style="color: white; float: right;">Enroll</button>
+						{% endif %}
+					</li>				
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="col-sm-6">
+			<h4>Student {{ student.Email }}</h4>
+			<br>
+			<ul class="list-group">
+				{% for semester, enrolled_subjects in enrolled_subjects_by_semester.items %}
+					<li class="list-group-item" style="font-weight: bold;">Semester {{ semester }}:</li>
+					{% for enrolled_subject in enrolled_subjects %}					
+						<li class="list-group-item">
+							{{ enrolled_subject.Ime }}
+							{% if enrolled_subject.id in passed_enrolled_subject_ids %}
+								{% if user.Roles_id != 1 %}
+								<button onclick="submitFormUrl('/mark_subject_as_not_passed/','{{ enrolled_subject.id }}')" type="button" class="btn btn-danger" style="color: white; float: right;">Nije upisan</button>
+								{% endif %}
+							{% else %}
+							{% if user.Roles_id != 2 %}
+								<button onclick="submitFormUrl('/disenroll_subject/','{{ enrolled_subject.id }}')" type="button" class="btn btn-danger" style="color: white; float: right;">Disenroll</button>
+							{% endif %}
+							{%if user.Roles_id != 1%}	
+								<button onclick="submitFormUrl('/mark_subject_as_lost/','{{ enrolled_subject.id }}')" type="button" class="btn btn-danger" style="color: white; float: right;">Izgubio Potpis</button>							
+								<button onclick="submitFormUrl('/mark_subject_as_passed/','{{ enrolled_subject.id }}')" type="button" class="btn btn-primary" style="color: white; float: right; margin-right: 5px;;">Polozen</button>
+							{%endif%}
+							{% endif %}
+						</li>
+					{% endfor %}
+					<br>
+				{% endfor %}
+			</ul>
+		</div>	
+	</div>
+</form>
+
+<script>
+
+	function submitFormUrl(url, subject_id) {
+		subject_input = document.getElementById('subject_id');
+		subject_input.value = subject_id
+		form = document.getElementById('student_form');
+		form.action = url;
+		form.submit();
+	}
+
+</script>
+{% endblock %}

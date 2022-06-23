@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<center><h2>List</h2></center>
+{%if user.Roles_id == 3 %}
+<a type="button" class="btn btn-success" href="/student_create" style="margin-bottom: 10px; color: white;">Create</a>
+{%endif%}
+<table class="table" style="width: 100%;">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Email</th>
+			<th scope="col">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{%for student in students %}	
+			<tr>
+				<th scope="row">{{ student.id }}</th>
+				<td>{{ student.Email }}</td>
+				<td>
+					{% if user.Roles_id != 3 %}
+					<a href="/student_view/{{student.id}}" type="button" class="btn btn-primary" style="color: white;">Edit</a>
+					{% else %}
+					<a href="/user_edit/{{student.id}}" type="button" class="btn btn-primary" style="color: white;">Edit</a>
+					{% endif %}
+					<a href="/student_delete/{{student.id}}" onclick="return confirm('Delete entry?')" type="button" class="btn btn-danger" style="color: white;">Delete</a>
+				</td>
+			</tr>
+		{%endfor%}			
+	</tbody>
+</table>
+
+{% endblock %}
